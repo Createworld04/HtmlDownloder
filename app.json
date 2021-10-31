@@ -27,7 +27,7 @@
             "value":""
         },
         "AUTH_USERS":{
-            "description":"Users who can use",
+            "description":"Admin/Owner/Friends ID Seperate by ','  Ex: 44578878,8878899",
             "value":""
         },
         "GROUPS":{
@@ -35,17 +35,17 @@
             "value":""
         },
         "HTML_GROUPS":{
-            "description":"Groups where to work for html",
+            "description":"Group ID if you would like to add the bot in group.",
             "value":""
         },
         "THUMB":{
-            "description":"Thumbnail link. Leave empty for using video thumbnail.",
+            "description":"(Thumbnail) Telegraph link or leave it default(Locky Lodu)",
             "value":"thumb.jpg",
             "required":false
         },
         "NAME":{
-            "description":"Name to send",
-            "value":"TheDarkPrince"
+            "description":"Credit",
+            "value":"I want no credit."
         }
     }
 }
