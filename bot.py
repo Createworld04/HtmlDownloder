@@ -281,7 +281,8 @@ async def choose_html_video_format(bot, query):
     else:
         videos = videos[start_index - 1 :]
     n = len(videos)
-    await msg.reply(f"Downloading!!! {n} videos")
+    await msg.reply(f"Total Videos Are:  {n} \n\nDownloading One By One (I am unstoppable Bro.)")
+
     await download_videos(msg, videos, start_index)
 
 
@@ -367,18 +368,8 @@ def download_video(message, video):
     topic = video[3]
     quote = video[4]
 
-    if "magnetoscript" in link and ("brightcove" in link or len(link.split("/")[-1]) == 13):
-        vid_id = link[-13:]
-        link = f"https://player.deshdeepak.me/{vid_id}"
-    elif "magnetoscript" in link and "jwp" in link:
-        vid_id = link[-8:]
-        link = f"https://player.deshdeepak.me/{vid_id}"
-    elif "jwplayer" in link and link.endswith('.m3u8'):
-        vid_id = link.removesuffix(".m3u8").split("/")[-1]
-        link = f"https://player.deshdeepak.me/{vid_id}"
-    elif "jwplayer" in link and link.endswith('.mp4'):
-        vid_id = link.removesuffix('.mp4').split('/')[-1].split('-')[0]
-        link = f"https://player.deshdeepak.me/{vid_id}"
+    if "brightcove" in link:
+        link = str(link)
 
     if not vid_format.isnumeric():
         title = vid_format
@@ -392,11 +383,11 @@ def download_video(message, video):
             ytf = 22
         else:
             ytf = 18
-    elif ("deshdeepak" in link and len(link.split("/")[-1]) == 13):
+    elif "support" in link :
         if vid_format not in ["144", "240", "360", "480", "720"]:
             vid_format = "360"
         ytf = f"'bestvideo[height<={vid_format}]+bestaudio'"
-    elif ("deshdeepak" in link and len(link.split("/")[-1]) == 8):
+    elif ("support" in link and len(link.split("/")[-1]) == 8):
         if vid_format == "144":
             vid_format = "180"
         elif vid_format == "240":
@@ -440,7 +431,7 @@ def download_video(message, video):
     st1, out1 = getstatusoutput(filename_cmd)
     if st1 != 0:
         logger.error(filename_cmd)
-        caption = f"Can't Download. Probably DRM.\n\nBy: {NAME}\n\nTitle: {title}\n\nTopic: {topic}\n\nError: {out1}"
+        caption = f"This video might be drm protected. I can't help you sorry BRUH!.\n\nTitle: {title}\n\nTopic: {topic}\n\nError: {out1}"
         return 1, "", caption, quote, filename
     yt_title, path = out1.split("\n")
     if title == "":
@@ -450,11 +441,11 @@ def download_video(message, video):
     st2, out2 = getstatusoutput(download_cmd)
     if st2 != 0:
         logger.error(download_cmd)
-        caption = f"Can't download link.\n\nBy: {NAME}\n\nTitle: {title}\n\nTopic: {topic}\n\nError: {out2}"
+        caption = f"Downloading Failed for this Video. I can't help you sorry BRUH!.\n\nTitle: {title}\n\nTopic: {topic}\n\nError: {out2}"
         return 2, "", caption, quote, filename
     else:
         filename += "." + path.split(".")[-1]
-        caption = f"By: {NAME}\n\nTitle: {title}\n\nTopic: {topic}"
+        caption = f"{title} .mkv\n\n<b>Topic</b>: {topic}"
         return 0, path, caption, quote, filename
 
 
@@ -462,7 +453,7 @@ def download_video(message, video):
 async def download_videos(message, videos, index=1):
     for video in videos:
         r, path, caption, quote, filename = download_video(message, video)
-        caption += f"\n\nIndex: {index}"
+        caption += f"\n\nTotal Downloaded: <b>{index}</b>\n\nDownload By: <b>{NAME}</b>"
         if r in [1, 2]:
             try:
                 await message.reply(caption, quote=quote)
@@ -543,7 +534,7 @@ async def download_link(bot, message):
         req_videos = commands[1:]
         videos = get_videos(req_videos, def_format)
         n = len(videos)
-        await message.reply(f"Downloading!!! {n} videos")
+        await message.reply(f"Total Videos Are : {n} \nDownloading One By One.")
         await download_videos(message, videos)
 
 
